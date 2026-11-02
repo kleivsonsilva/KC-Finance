@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3B5BDB">
+<title>KC Finance</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDF1FB;--card:#fff;--ink:#1D2750;--mute:#6C7596;--k:#3B6FE0;--c:#E0578A;--in:#17A673;--out:#EF5B52;--line:#E2E7F5;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#121936;--card:#1C2547;--ink:#EEF1FF;--mute:#9AA4CC;--line:#2C3763;color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+html{padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+body{font-family:Nunito,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+.hide{display:none!important}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.box{background:var(--card);border-radius:28px;padding:34px 26px;width:100%;max-width:380px;text-align:center;box-shadow:0 20px 50px #3b5bdb26}
+.box .big{font-size:58px}
+.box h1{font-size:30px;font-weight:900;margin:6px 0 4px}
+.box p{color:var(--mute);margin-bottom:22px}
+input{width:100%;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:var(--bg);outline:none;margin-bottom:10px}
+input:focus-visible{border-color:var(--k)}
+.btn{width:100%;padding:15px;border:0;border-radius:14px;background:linear-gradient(120deg,var(--k),var(--c));color:#fff;font-weight:900;font-size:17px;cursor:pointer}
+.btn:focus-visible,.seg button:focus-visible,.x:focus-visible,.out:focus-visible{outline:3px solid var(--k);outline-offset:2px}
+.err{color:var(--out);font-weight:700;min-height:22px;margin-top:10px;font-size:14px}
+/* topo */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.top h2{font-size:24px;font-weight:900}
+.out{border:0;background:var(--card);padding:9px 14px;border-radius:12px;font-weight:700;cursor:pointer;color:var(--mute)}
+/* total */
+.total{background:linear-gradient(135deg,var(--k),var(--c));color:#fff;border-radius:28px;padding:24px 22px;margin-bottom:16px}
+.total small{font-weight:700;opacity:.9;font-size:15px}
+.total .v{font-size:clamp(38px,11vw,54px);font-weight:900;line-height:1.1;margin:4px 0 14px}
+.mini{display:flex;gap:10px}
+.mini div{flex:1;background:#ffffff26;border-radius:16px;padding:10px 12px;font-weight:700;font-size:14px}
+.mini b{display:block;font-size:18px;font-weight:900}
+/* pessoas */
+.pp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:520px){.pp{grid-template-columns:1fr}}
+.p{background:var(--card);border-radius:24px;padding:18px;border-top:6px solid var(--col)}
+.p h3{font-size:19px;font-weight:900;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:6px 0;font-weight:700;color:var(--mute)}
+.row b{color:var(--ink);font-weight:900}
+.row.s{border-top:2px dashed var(--line);margin-top:6px;padding-top:10px;color:var(--ink);font-size:17px}
+.pos{color:var(--in)!important}.neg{color:var(--out)!important}
+/* form */
+.form{background:var(--card);border-radius:24px;padding:18px;margin-bottom:16px}
+.form h3{font-size:19px;font-weight:900;margin-bottom:12px}
+.seg{display:flex;gap:8px;margin-bottom:10px}
+.seg button{flex:1;padding:12px 6px;border-radius:14px;border:2px solid var(--line);background:transparent;font-weight:900;cursor:pointer}
+.seg button.on{color:#fff;border-color:transparent;background:var(--col)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* lista */
+.list h3{font-size:19px;font-weight:900;margin:0 4px 10px}
+.it{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:18px;padding:12px 14px;margin-bottom:8px}
+.it .ic{font-size:26px}
+.it .t{flex:1;min-width:0}
+.it .t b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it .t span{font-size:13px;color:var(--mute);font-weight:700}
+.it .m{font-weight:900;white-space:nowrap}
+.x{border:0;background:none;font-size:18px;cursor:pointer;padding:6px;opacity:.6}
+.vazio{text-align:center;color:var(--mute);font-weight:700;padding:26px 10px;background:var(--card);border-radius:18px}
+.badge{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:var(--col)}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <div class="box">
+    <div class="big">💰</div>
+    <h1>KC Finance</h1>
+    <p>Kleivson e Claudiane 💙💗</p>
+    <input id="em" type="email" placeholder="📧 E-mail" autocomplete="username">
+    <input id="pw" type="password" placeholder="🔒 Senha" autocomplete="current-password">
+    <button class="btn" id="entrar">Entrar 🚀</button>
+    <div class="err" id="err" role="alert"></div>
+  </div>
+</section>
+
+<main id="app" class="wrap hide">
+  <div class="top"><h2>💰 KC Finance</h2><button class="out" id="sair">Sair 👋</button></div>
+
+  <div class="total">
+    <small>🏠 Sobrou juntos</small>
+    <div class="v" id="t-sobra">R$ 0,00</div>
+    <div class="mini">
+      <div>📈 Entrou<b id="t-in">R$ 0,00</b></div>
+      <div>📉 Saiu<b id="t-out">R$ 0,00</b></div>
+    </div>
+  </div>
+
+  <div class="pp">
+    <div class="p" style="--col:var(--k)"><h3>👨 Kleivson</h3>
+      <div class="row">📈 Entrou<b id="k-in"></b></div>
+      <div class="row">📉 Saiu<b id="k-out"></b></div>
+      <div class="row s">🪙 Sobrou<b id="k-s"></b></div></div>
+    <div class="p" style="--col:var(--c)"><h3>👩 Claudiane</h3>
+      <div class="row">📈 Entrou<b id="c-in"></b></div>
+      <div class="row">📉 Saiu<b id="c-out"></b></div>
+      <div class="row s">🪙 Sobrou<b id="c-s"></b></div></div>
+  </div>
+
+  <div class="form" id="form" style="--col:var(--k)">
+    <h3>✍️ Novo lançamento</h3>
+    <div class="seg" id="seg-p">
+      <button data-v="kleivson" class="on" style="--col:var(--k)">👨 Kleivson</button>
+      <button data-v="claudiane" style="--col:var(--c)">👩 Claudiane</button>
+    </div>
+    <div class="seg" id="seg-t">
+      <button data-v="entrada" class="on" style="--col:var(--in)">📈 Entrou</button>
+      <button data-v="saida" style="--col:var(--out)">📉 Saiu</button>
+    </div>
+    <div class="two">
+      <input id="valor" type="text" inputmode="numeric" autocomplete="off" placeholder="💵 R$ 0,00">
+      <input id="data" type="date">
+    </div>
+    <input id="desc" type="text" maxlength="60" placeholder="📝 Descrição (ex.: salário, mercado)">
+    <button class="btn" id="salvar">Salvar ✅</button>
+    <div class="err" id="ferr" role="alert"></div>
+  </div>
+
+  <div class="list"><h3>🧾 Lançamentos</h3><div id="lista"></div></div>
+</main>
+
+<script type="module">
+/* ============ 1) COLE AQUI A CONFIG DO SEU PROJETO FIREBASE ============ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCIkdwwv_lL9OKfkZJkAIKthreP7oMkOSo",
+  authDomain: "kc-finance-2f2b5.firebaseapp.com",
+  projectId: "kc-finance-2f2b5",
+  storageBucket: "kc-finance-2f2b5.firebasestorage.app",
+  messagingSenderId: "735563002682",
+  appId: "1:735563002682:web:25183e3ac65a801a211603"
+};
+/* ======================================================================= */
+
+const DEMO = firebaseConfig.apiKey.startsWith("COLE");
+const $ = id => document.getElementById(id);
+const brl = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const hoje = () => new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const NOMES = {kleivson:"Kleivson",claudiane:"Claudiane"};
+const COR = {kleivson:"var(--k)",claudiane:"var(--c)"};
+let dados = [], pessoa = "kleivson", tipo = "entrada", api;
+
+/* ---------- camada de dados: Firebase ou modo demonstração ---------- */
+if (DEMO) {
+  const LS = "kcfinance-demo";
+  const ler = () => JSON.parse(localStorage.getItem(LS) || "[]");
+  let cb;
+  api = {
+    login: async () => { sessionStorage.setItem("kc","1"); },
+    logout: async () => { sessionStorage.removeItem("kc"); location.reload(); },
+    onAuth: f => f(sessionStorage.getItem("kc") ? {} : null),
+    ouvir: f => { cb = f; f(ler()); },
+    add: async l => { const a = ler(); a.push({...l,id:String(Date.now()),criado:Date.now()}); localStorage.setItem(LS,JSON.stringify(a)); cb(a); },
+    del: async id => { const a = ler().filter(x=>x.id!==id); localStorage.setItem(LS,JSON.stringify(a)); cb(a); }
+  };
+} else {
+  const V = "https://www.gstatic.com/firebasejs/10.12.2/";
+  const [{initializeApp},A,F] = await Promise.all([
+    import(V+"firebase-app.js"), import(V+"firebase-auth.js"), import(V+"firebase-firestore.js")]);
+  const app = initializeApp(firebaseConfig), auth = A.getAuth(app), db = F.getFirestore(app);
+  const col = F.collection(db,"lancamentos");
+  api = {
+    login: (e,p) => A.signInWithEmailAndPassword(auth,e,p),
+    logout: () => A.signOut(auth),
+    onAuth: f => A.onAuthStateChanged(auth,f),
+    ouvir: f => F.onSnapshot(F.query(col,F.orderBy("criado","desc")), s => f(s.docs.map(d=>({id:d.id,...d.data()})))),
+    add: l => F.addDoc(col,{...l,criado:Date.now()}),
+    del: id => F.deleteDoc(F.doc(db,"lancamentos",id))
+  };
+}
+
+/* ---------- login ---------- */
+async function entrar(){
+  $("err").textContent = "";
+  const e = $("em").value.trim(), p = $("pw").value;
+  if(!e || !p){ $("err").textContent = "Preencha e-mail e senha 🙂"; return; }
+  try { await api.login(e,p); }
+  catch { $("err").textContent = "E-mail ou senha incorretos 😕"; }
+}
+$("entrar").onclick = entrar;
+$("pw").onkeydown = e => { if(e.key==="Enter") entrar(); };
+$("sair").onclick = () => api.logout();
+
+let ouvindo = false;
+api.onAuth(u => {
+  $("login").classList.toggle("hide",!!u);
+  $("app").classList.toggle("hide",!u);
+  if(u && !ouvindo){ ouvindo = true; api.ouvir(l => { dados = l; render(); }); }
+});
+
+/* ---------- formulário ---------- */
+$("data").value = hoje();
+function seg(id,set){
+  $(id).onclick = e => {
+    const b = e.target.closest("button"); if(!b) return;
+    $(id).querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+    set(b.dataset.v);
+  };
+}
+seg("seg-p", v => pessoa = v);
+seg("seg-t", v => tipo = v);
+
+/* máscara: os dígitos entram da direita para a esquerda (centavos primeiro) */
+$("valor").addEventListener("input", e => {
+  const n = e.target.value.replace(/\D/g,"").replace(/^0+/,"");
+  e.target.value = n ? brl(parseInt(n.slice(0,12),10)/100) : "";
+});
+
+$("salvar").onclick = async () => {
+  const valor = parseInt($("valor").value.replace(/\D/g,"")||"0",10)/100;
+  $("ferr").textContent = "";
+  if(!(valor > 0)){ $("ferr").textContent = "Digite um valor maior que zero 💵"; return; }
+  try {
+    await api.add({pessoa,tipo,valor:Math.round(valor*100)/100,desc:$("desc").value.trim()||(tipo==="entrada"?"Entrada":"Saída"),data:$("data").value||hoje()});
+    $("valor").value = ""; $("desc").value = "";
+  } catch { $("ferr").textContent = "Não foi possível salvar. Tente de novo 😕"; }
+};
+
+/* ---------- tela ---------- */
+function soma(p,t){ return dados.filter(d=>(!p||d.pessoa===p)&&d.tipo===t).reduce((s,d)=>s+d.valor,0); }
+function sobra(el,v){ el.textContent = brl(v); el.classList.toggle("neg",v<0); el.classList.toggle("pos",v>0); }
+
+function render(){
+  const k = {i:soma("kleivson","entrada"),o:soma("kleivson","saida")};
+  const c = {i:soma("claudiane","entrada"),o:soma("claudiane","saida")};
+  $("k-in").textContent = brl(k.i); $("k-out").textContent = brl(k.o); sobra($("k-s"),k.i-k.o);
+  $("c-in").textContent = brl(c.i); $("c-out").textContent = brl(c.o); sobra($("c-s"),c.i-c.o);
+  $("t-in").textContent = brl(k.i+c.i); $("t-out").textContent = brl(k.o+c.o);
+  $("t-sobra").textContent = brl(k.i+c.i-k.o-c.o);
+
+  const l = $("lista"); l.textContent = "";
+  if(!dados.length){ l.innerHTML = '<div class="vazio">Nada por aqui ainda 🌱<br>Faça o primeiro lançamento acima.</div>'; return; }
+  [...dados].sort((a,b)=>(b.data||"").localeCompare(a.data||"")||(b.criado||0)-(a.criado||0)).forEach(d => {
+    const e = d.tipo==="entrada", el = document.createElement("div");
+    el.className = "it"; el.style.setProperty("--col",COR[d.pessoa]);
+    const [y,m,dd] = (d.data||"").split("-");
+    el.innerHTML = `<div class="ic">${e?"📈":"📉"}</div>
+      <div class="t"><b></b><span><i class="badge"></i>${NOMES[d.pessoa]||""} • ${dd}/${m}/${y}</span></div>
+      <div class="m ${e?"pos":"neg"}">${e?"+":"−"} ${brl(d.valor)}</div>
+      <button class="x" aria-label="Apagar lançamento">🗑️</button>`;
+    el.querySelector("b").textContent = d.desc;
+    el.querySelector(".x").onclick = () => { if(confirm("Apagar este lançamento? 🗑️")) api.del(d.id); };
+    l.appendChild(el);
+  });
+}
+</script>
+</body>
+</html>
